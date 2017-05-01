@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2017 at 07:37 PM
+-- Generation Time: May 01, 2017 at 02:30 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -29,10 +29,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `admins` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `name`, `phone`, `email`, `image`, `password`, `role_id`) VALUES
+(1, 'Samael', NULL, NULL, 'samael.jpg', '$2y$10$sFtSOrO1sva6xMYGWrCw4ePa.VbzDdihtfNzDmopA7oC4nVIqQo2.', 1),
+(2, 'Death', NULL, NULL, 'death.jpg', '$2y$10$pxBTCYbCckUL4..p5.4h8utaoExhqNNOxMd7vPx2rptcgzId4BgnK', 2),
+(3, 'War', NULL, NULL, 'war.jpg', '$2y$10$q83ejOdyMSzBIC1W/EWGE./VGetmTtMUsIBEXnURfUBneBAO31lhe', 3);
 
 -- --------------------------------------------------------
 
@@ -47,6 +58,15 @@ CREATE TABLE `courses` (
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`id`, `name`, `description`, `image`) VALUES
+(1, 'Frontend', 'Frontend development', 'fed.png'),
+(2, 'Backend', 'Backend development', 'Backend.png'),
+(3, 'DBA', 'Database development', 'db.png');
+
 -- --------------------------------------------------------
 
 --
@@ -58,6 +78,15 @@ CREATE TABLE `roles` (
   `name` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`) VALUES
+(1, 'owner'),
+(2, 'manager'),
+(3, 'sales');
+
 -- --------------------------------------------------------
 
 --
@@ -67,9 +96,20 @@ CREATE TABLE `roles` (
 CREATE TABLE `students` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `course_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`id`, `name`, `phone`, `email`, `image`, `course_id`) VALUES
+(1, 'Bone Man', NULL, NULL, 'bone.jpg', 1),
+(2, 'Otep', NULL, NULL, 'otep.jpg', 2),
+(3, 'Dany Filth', NULL, NULL, 'filth.jpg', 3);
 
 --
 -- Indexes for dumped tables
@@ -110,22 +150,22 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
