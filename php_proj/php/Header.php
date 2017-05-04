@@ -2,7 +2,7 @@
 
 include 'api.php';
 
-echo '<head>
+$html = '<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -21,9 +21,10 @@ figcaption {
                 <img src="../img/school_img.png" alt="school_img" width="20%">
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">School</a></li>
-                <li><a href="#">Administration</a></li>
-            </ul>
+                <li><a href="#">School</a></li>';
+if ( $_SESSION["role"] != "sales")
+    $html .= '<li><a href="#">Administration</a></li>';
+$html .= '</ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="Logout.php"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
                 <li><figure><img src="../img/eyal.jpg" alt="manager_img" width="30%";>
@@ -32,3 +33,5 @@ figcaption {
         </div>
     </nav>
 </body>';
+
+echo $html;

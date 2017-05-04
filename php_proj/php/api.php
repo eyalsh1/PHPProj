@@ -1,14 +1,11 @@
 <?php
 session_start();
-include 'DB.php';
+include '../Entities/DB.php';
 
 function login_check($uname, $pwd)
 {
     $conn = DB::getInstance()->getConnection();
-    if ($conn->errno) {
-        echo $conn->error;
-        die();
-    }
+    if ($conn->errno) {echo $conn->error; die();}
 
     //$stmt = $conn->prepare("SELECT role_id, image, name, password FROM admins WHERE email = ?");
     $stmt = $conn->prepare("SELECT admins.role_id as role_id, admins.image as image, admins.name as name, admins.password as password, roles.name as role FROM admins INNER JOIN roles on roles.id = admins.role_id WHERE email = ?");
