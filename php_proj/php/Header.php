@@ -16,16 +16,18 @@ figcaption {
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <img src="../img/school_img.png" alt="school_img" width="20%">
+                <img src="../img/school_img.png" alt="school_img" width=20%>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="School.php">School</a></li>';
-if ( $_SESSION["role"] != "sales")
-    $html .= '<li><a href="Admin.php">Administration</a></li>';
+                <li><a class="btn btn-default" href="School.php" style="width: 150px">School</a></li>';
+
+if ($_SESSION["role"] != "sales")
+    $html .= '<li><a class="btn btn-default" href="Admin.php" style="width: 150px">Administration</a></li>';
+
 $html .= '</ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="Logout.php"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
-                <li><figure><img src="../img/Admins/' . $_SESSION["image"] . '" alt="manager_img" width=10%>
+                <li><figure><img src="../img/Admins/' . $_SESSION["image"] . '" alt="manager_img" width=80px>
                     <figcaption>' . $_SESSION["name"] . ', ' . $_SESSION["role"] . '</figcaption></li>
             </ul>
         </div>
