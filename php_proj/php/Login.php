@@ -9,6 +9,6 @@ $pwd = filter_var($_POST['pwd'], FILTER_SANITIZE_STRING);
 include 'api.php';
 
 if (login_check($uname, $pwd))
-    header("Location: Main.php");
+    header("Location: School.php");
 else // uname or pwd error
     header("Location: ../index.html");

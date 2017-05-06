@@ -1,6 +1,11 @@
 <?php
 session_start();
+
 include '../Entities/DB.php';
+include '../Entities/Person.php';
+include '../Entities/Admin.php';
+include '../Entities/Course.php';
+include '../Entities/Student.php';
 
 function login_check($uname, $pwd)
 {

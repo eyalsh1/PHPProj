@@ -1,6 +1,6 @@
 <?php
-include 'Person.php';
-include 'DB.php';
+//include 'Person.php';
+//include 'DB.php';
 
 class Course implements ISavable
 {
@@ -17,6 +17,22 @@ class Course implements ISavable
         $this->name = $name;
         $this->description = $description;
         //$this->img = $img;
+    }
+
+    public function count()
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT * FROM courses" );
+
+        if ($result->num_rows > 0)
+        {
+            $count = $result->num_rows;
+            echo json_encode($count);
+        }
+        else
+            echo "0";
     }
 
     public function insert()
@@ -60,24 +76,27 @@ class Course implements ISavable
         {
             while ($row = $result->fetch_assoc())
                 $rows[] = $row;
-            echo json_encode($rows);
+            //echo json_encode($rows);
         }
         else
             echo "0 results";
+        return $rows;
     }
 
-    public function count() {
-        $conn = DB::getInstance()->getConnection();
-        if ($conn->errno) {echo $conn->error; die();}
-
-        $result = $conn->query("SELECT * FROM courses" );
-
-        if ($result->num_rows > 0)
+    public function printAll()
+    {
+        $html = "<h3>Courses</h3>";
+        $rows = self::read();
+        for ($i=0, $count = count($rows); $i < $count; $i++)
         {
-            $count = $result->num_rows;
-            echo json_encode($count);
+            $html .= "<div class=\"row\">";
+            $html .= "<div class=\"col-md-1\">";
+            $html .= "<a href=\"?page=courses&course_id={$rows[$i]['id']}\">";
+            $html .= "<figure><img src=\"../img/courses/{$rows[$i]['image']}\" width=100%>";
+            $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}</figcaption>";
+            $html .= "<figcaption style=color:blue;>{$rows[$i]["description"]}</figcaption></a></figure><br>";
+            $html .= "</div></div>";
         }
-        else
-            echo "0";
+        return $html;
     }
 }

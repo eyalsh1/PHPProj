@@ -1,6 +1,6 @@
 <?php
-include 'Person.php';
-include 'DB.php';
+//include 'Person.php';
+//include 'DB.php';
 
 class Admin extends Person {
     public $image;
@@ -23,6 +23,22 @@ class Admin extends Person {
         $this->image = $image;
         $this->role_id = $role_id;
         $this->password = $password;
+    }
+
+    public function count()
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT * FROM admins");
+
+        if ($result->num_rows > 0)
+        {
+            $count = $result->num_rows;
+            echo json_encode($count);
+        }
+        else
+            echo "0";
     }
 
     public function insert()
@@ -66,26 +82,29 @@ class Admin extends Person {
         {
             while ($row = $result->fetch_assoc())
                 $rows[] = $row;
-            echo json_encode($rows);
+            //echo json_encode($rows);
         }
         else
             echo "0 results";
+        return $rows;
     }
 
-    public function count()
+     public function printAll()
     {
-        $conn = DB::getInstance()->getConnection();
-        if ($conn->errno) {echo $conn->error; die();}
-
-        $result = $conn->query("SELECT * FROM admins");
-
-        if ($result->num_rows > 0)
+        $html = "<h3>Admins</h3>";
+        $rows = self::read();
+        for ($i=0, $count = count($rows); $i < $count; $i++)
         {
-            $count = $result->num_rows;
-            echo json_encode($count);
+            $html .= "<div class=\"row\">";
+            $html .= "<div class=\"col-md-1\">";
+            $html .= "<a href=\"?page=admins&admin_id={$rows[$i]['id']}\">";
+            $html .= "<figure><img src=\"../img/admins/{$rows[$i]['image']}\" width=100%>";
+            $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}, {$rows[$i]["role"]}</figcaption>";
+            $html .= "<figcaption style=color:blue;>{$rows[$i]["phone"]}</figcaption>";
+            $html .= "<figcaption style=color:blue;>{$rows[$i]["email"]}</figcaption></a></figure><br>";
+            $html .= "</div></div>";
         }
-        else
-            echo "0";
+        return $html;
     }
 
     public function login($username, $password)

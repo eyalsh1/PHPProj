@@ -1,6 +1,6 @@
 <?php
 include 'ISavable.php';
-include 'DB.php';
+//include 'DB.php';
 
 abstract class Person implements ISavable {
     protected $id;
