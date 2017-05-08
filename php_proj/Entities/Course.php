@@ -83,20 +83,17 @@ class Course implements ISavable
         return $rows;
     }
 
-    public function printAll()
+    /*public function printAll()
     {
         $html = "<h3>Courses</h3>";
         $rows = self::read();
         for ($i=0, $count = count($rows); $i < $count; $i++)
         {
-            $html .= "<div class=\"row\">";
-            $html .= "<div class=\"col-md-1\">";
             $html .= "<a href=\"?page=courses&course_id={$rows[$i]['id']}\">";
             $html .= "<figure><img src=\"../img/courses/{$rows[$i]['image']}\" width=100%>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}</figcaption>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["description"]}</figcaption></a></figure><br>";
-            $html .= "</div></div>";
         }
         return $html;
-    }
+    }*/
 }

@@ -84,20 +84,17 @@ class Student extends Person {
         return $rows;
     }
 
-    public function printAll()
+    /*public function printAll()
     {
         $html = "<h3>Students</h3>";
         $rows = self::read();
         for ($i=0, $count = count($rows); $i < $count; $i++)
         {
-            $html .= "<div class=\"row\">";
-            $html .= "<div class=\"col-md-1\">";
             $html .= "<a href=\"?page=students&student_id={$rows[$i]['id']}\">";
             $html .= "<figure><img src=\"../img/students/{$rows[$i]['image']}\" width=100%>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}</figcaption>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["phone"]}</figcaption></a></figure><br>";
-            $html .= "</div></div>";
         }
         return $html;
-    }
+    }*/
 }

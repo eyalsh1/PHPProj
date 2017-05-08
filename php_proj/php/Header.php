@@ -26,9 +26,9 @@ if ($_SESSION["role"] != "sales")
 
 $html .= '</ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="Logout.php"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                <li><a href="?action=logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
                 <li><figure><img src="../img/Admins/' . $_SESSION["image"] . '" alt="manager_img" width=80px>
-                    <figcaption>' . $_SESSION["name"] . ', ' . $_SESSION["role"] . '</figcaption></li>
+                    <figcaption>' . $_SESSION["name"] . ', ' . $_SESSION["role"] . '</figcaption></figure></li>
             </ul>
         </div>
     </nav>

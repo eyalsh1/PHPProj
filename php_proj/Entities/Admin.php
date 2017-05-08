@@ -74,7 +74,7 @@ class Admin extends Person {
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $result = $conn->query("SELECT admins.id as id, admins.name as name, admins.phone as phone, admins.email as email, admins.image as image, roles.name as role FROM admins INNER JOIN roles on roles.id = admins.role_id");
+        $result = $conn->query("SELECT admins.id as id, admins.name as name, admins.phone as phone, admins.email as email, admins.image as image, admins.role_id as role_id,roles.name as role FROM admins INNER JOIN roles on roles.id = admins.role_id");
 
         $rows = array();
 
@@ -89,23 +89,20 @@ class Admin extends Person {
         return $rows;
     }
 
-     public function printAll()
+    /*public function printAll()
     {
         $html = "<h3>Admins</h3>";
         $rows = self::read();
         for ($i=0, $count = count($rows); $i < $count; $i++)
         {
-            $html .= "<div class=\"row\">";
-            $html .= "<div class=\"col-md-1\">";
             $html .= "<a href=\"?page=admins&admin_id={$rows[$i]['id']}\">";
             $html .= "<figure><img src=\"../img/admins/{$rows[$i]['image']}\" width=100%>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}, {$rows[$i]["role"]}</figcaption>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["phone"]}</figcaption>";
             $html .= "<figcaption style=color:blue;>{$rows[$i]["email"]}</figcaption></a></figure><br>";
-            $html .= "</div></div>";
         }
         return $html;
-    }
+    }*/
 
     public function login($username, $password)
     {
@@ -135,7 +132,8 @@ class Admin extends Person {
 
     public function logout()
     {
-        session_destroy();
+        //session_unset(); // remove all session variables
+        session_destroy(); // destroy the session
         echo "logout";
     }
 }
