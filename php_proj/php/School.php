@@ -27,32 +27,39 @@ else
             break;
 
         case 'insert':
+        case 'edit':
             switch ($_GET['type']) {
                 case 'course':
                     $html .= "<div class=\"col-sm-8\">";
-                    $html .= file_get_contents('../templates/Edit.html');
+                    $html .= file_get_contents('../templates/AddEditCourse.html');
                     $html .= "</div>";
                     break;
 
                 case 'student':
-
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditStudent.html');
+                    $html .= "</div>";
                     break;
             }
             break;
 
-        case 'edit':
+        /*case 'edit':
             switch ($_GET['type']) {
                 case 'course':
                     $id = $_GET['id'];
-
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditCourse.html');
+                    $html .= "</div>";
                     break;
 
                 case 'student':
                     $id = $_GET['id'];
-
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditStudent.html');
+                    $html .= "</div>";
                     break;
             }
-            break;
+            break;*/
 
         default:
             break;

@@ -24,21 +24,26 @@ else
             break;
 
         case 'insert':
-            switch ($_GET['type']) {
-                case 'admin':
-
-                    break;
-            }
-            break;
-
         case 'edit':
             switch ($_GET['type']) {
                 case 'admin':
-                    $id = $_GET['id'];
-
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditAdmin.html');
+                    $html .= "</div>";
                     break;
             }
             break;
+
+        /*case 'edit':
+            switch ($_GET['type']) {
+                case 'admin':
+                    $id = $_GET['id'];
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditAdmin.html');
+                    $html .= "</div>";
+                    break;
+            }
+            break;*/
 
         default:
             break;
