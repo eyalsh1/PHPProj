@@ -27,8 +27,7 @@ else
             break;
 
         case 'insert':
-        case 'edit':
-            switch ($_GET['type']) {
+        switch ($_GET['type']) {
                 case 'course':
                     $html .= "<div class=\"col-sm-8\">";
                     $html .= file_get_contents('../templates/AddEditCourse.html');
@@ -43,23 +42,23 @@ else
             }
             break;
 
-        /*case 'edit':
+        case 'show':
             switch ($_GET['type']) {
                 case 'course':
                     $id = $_GET['id'];
                     $html .= "<div class=\"col-sm-8\">";
-                    $html .= file_get_contents('../templates/AddEditCourse.html');
+                    $html .= file_get_contents('../templates/ShowCourse.html');
                     $html .= "</div>";
                     break;
 
                 case 'student':
                     $id = $_GET['id'];
                     $html .= "<div class=\"col-sm-8\">";
-                    $html .= file_get_contents('../templates/AddEditStudent.html');
+                    $html .= file_get_contents('../templates/ShowStudent.html');
                     $html .= "</div>";
                     break;
             }
-            break;*/
+            break;
 
         default:
             break;
@@ -104,7 +103,7 @@ function buildCourseLink($courses, $i)
 {
     $link = "";
     if ($i < count($courses)) {
-        $link .= "<a href=\"?action=edit&type=course&id={$courses[$i]['id']}\">";
+        $link .= "<a href=\"?action=show&type=course&id={$courses[$i]['id']}\">";
         $link .= "<figure><img src=\"../img/courses/{$courses[$i]['image']}\" width=100% height=30%>";
         $link .= "<figcaption style=color:blue;>{$courses[$i]['name']}</figcaption>";
         $link .= "<figcaption style=color:blue;>{$courses[$i]['description']}</figcaption></a></figure><br>";
@@ -116,10 +115,29 @@ function buildStudentLink($students, $i)
 {
     $link = "";
     if ($i < count($students)) {
-        $link .= "<a href=\"?action=edit&type=student&id={$students[$i]['id']}\">";
+        $link .= "<a href=\"?action=show&type=student&id={$students[$i]['id']}\">";
         $link .= "<figure><img src=\"../img/students/{$students[$i]['image']}\" width=100% height=30%>";
         $link .= "<figcaption style=color:blue;>{$students[$i]["name"]}</figcaption>";
         $link .= "<figcaption style=color:blue;>{$students[$i]["phone"]}</figcaption></a></figure><br>";
     }
     return $link;
+}
+
+function AddEditCourse()
+{
+
+}
+
+function AddEditStudent()
+{
+
+}
+function ShowCourse()
+{
+
+}
+
+function ShowStudent()
+{
+
 }

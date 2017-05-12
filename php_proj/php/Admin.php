@@ -24,7 +24,7 @@ else
             break;
 
         case 'insert':
-        case 'edit':
+        case 'show':
             switch ($_GET['type']) {
                 case 'admin':
                     $html .= "<div class=\"col-sm-8\">";
@@ -85,7 +85,7 @@ function buildSummary($admins)
 function buildAdminLink($admins, $i)
 {
     $link = "";
-    $link .= "<a href=\"?action=edit&type=admin&id={$admins[$i]['id']}\">";
+    $link .= "<a href=\"?action=show&type=admin&id={$admins[$i]['id']}\">";
     $link .= "<figure><img src=\"../img/admins/{$admins[$i]['image']}\" width=100% height=30%>";
     $link .= "<figcaption style=color:blue;>{$admins[$i]["name"]}, {$admins[$i]["role"]}</figcaption>";
     $link .= "<figcaption style=color:blue;>{$admins[$i]["phone"]}</figcaption>";
