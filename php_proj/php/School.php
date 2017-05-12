@@ -42,6 +42,22 @@ else
             }
             break;
 
+        case 'edit':
+            switch ($_GET['type']) {
+                case 'course':
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditCourse.html');
+                    $html .= "</div>";
+                    break;
+
+                case 'student':
+                    $html .= "<div class=\"col-sm-8\">";
+                    $html .= file_get_contents('../templates/AddEditStudent.html');
+                    $html .= "</div>";
+                    break;
+            }
+            break;
+
         case 'show':
             switch ($_GET['type']) {
                 case 'course':
@@ -54,13 +70,15 @@ else
                 case 'student':
                     $id = $_GET['id'];
                     $html .= "<div class=\"col-sm-8\">";
-                    $html .= file_get_contents('../templates/ShowStudent.html');
+                    //$html .= file_get_contents('../templates/ShowStudent.html');
+                    $html .= ShowStudent($id);
                     $html .= "</div>";
                     break;
             }
             break;
 
         default:
+
             break;
     }
 }
@@ -91,9 +109,9 @@ function buildSummary($courses, $students)
 {
     $html = "<div class=\"col-sm-8\">
                 <div class=\"row\">
-                    <div class=\"col-sm-12\" style=\"color:red;\"><h1>School summary</h1></div>
-                    <div class=\"col-sm-12\" style=\"color:red;\"><h2>Courses amount is " . count($courses) . "</h2></div>
-                    <div class=\"col-sm-12\" style=\"color:red;\"><h2>Students amount is " . count($students) . "</h2></div>
+                    <div class=\"col-sm-12\"><h1>School summary</h1></div>
+                    <div class=\"col-sm-12\"><h2>Courses amount is " . count($courses) . "</h2></div>
+                    <div class=\"col-sm-12\"><h2>Students amount is " . count($students) . "</h2></div>
                 </div>
              </div>";
     return $html;
@@ -137,7 +155,50 @@ function ShowCourse()
 
 }
 
-function ShowStudent()
+function ShowStudent($id)
 {
+    $html = LoadBootstrap();
+    $html .= "<form action=\"school.php\">
+                <div class=\"col-sm-1\">
+                    <h2>Student</h2>
+                </div>
+                <div class=\"col-sm-11\">
+                    <button type=\"submit\" class=\"btn btn-default\">Edit</button>
+                </div>
+        
+                <div class=\"col-sm-12\"><hr></div>
+        
+                <div class=\"col-sm-6\">
+                    <img src=\"../img/school_img.png\" alt=\"school_img\" width=100%>
+                </div>
+                <div class=\"col-sm-6\">
+                    <h3>Yossi Chohen</h3>
+                    <h3>052-1231234</h3>
+                    <h3>yossi@gmail.com</h3>
+                    <h3>Course: DBA</h3>
+                </div>
+                
+                <input type=\"hidden\" name=\"action\" value=\"edit\">
+                <input type=\"hidden\" name=\"type\" value=\"student\">
+                <input type=\"hidden\" name=\"id\" value=\"{$id}\">   
+            </form>
+        </body>
+        </html>";
+    return $html;
+}
 
+function LoadBootstrap()
+{
+    $html = '<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                <link rel="stylesheet" type="text/css" href="../css/index.css">
+            </head>
+            <body>';
+    return $html;
 }

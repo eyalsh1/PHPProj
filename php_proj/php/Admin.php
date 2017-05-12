@@ -75,8 +75,8 @@ function buildSummary($admins)
 {
     $html = "<div class=\"col-sm-10\">
                 <div class=\"row\">
-                    <div class=\"col-sm-12\" style=\"color:red;\"><h1>Admin summary</h1></div>
-                    <div class=\"col-sm-12\" style=\"color:red;\"><h2>Admin amount is " . count($admins) . "</h2></div>
+                    <div class=\"col-sm-12\"><h1>Admin summary</h1></div>
+                    <div class=\"col-sm-12\"><h2>Admin amount is " . count($admins) . "</h2></div>
                 </div>
              </div>";
     return $html;
