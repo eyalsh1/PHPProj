@@ -151,7 +151,7 @@ function buildStudentLink($students, $i)
 function EditCourse($id, $courses)
 {
     $html = LoadBootstrap();
-    $html .= "<form action=\"School.php\">
+    $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Add / Edit Course</h2>
                     <hr>
@@ -183,7 +183,7 @@ function EditCourse($id, $courses)
                     <img src=\"../img/Courses/{$courses[$id-1]['image']}\" alt=\"course_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"img/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div>
             
                 <h2 class=\"control-label col-sm-12\"><br>Total " . Student::countCourseStudents($id) . " student";
@@ -231,7 +231,7 @@ function AddCourse()
                     <img src=\"../img/school_img.png\" alt=\"course_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"img/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div>
             </form>
         </body>
@@ -242,7 +242,7 @@ function AddCourse()
 function EditStudent($id, $courses, $students)
 {
     $html = LoadBootstrap();
-    $html .= "<form action=\"School.php\">
+    $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Add / Edit Student</h2>
                     <hr>
@@ -277,7 +277,7 @@ function EditStudent($id, $courses, $students)
                     <img src=\"../img/Students/{$students[$id-1]['image']}\" alt=\"student_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"img/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>
@@ -328,7 +328,7 @@ function AddStudent($courses)
                     <img src=\"../img/school_img.png\" alt=\"student_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"img/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>

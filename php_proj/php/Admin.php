@@ -129,7 +129,7 @@ function AddAdmin()
                     <img src=\"../img/school_img.png\" alt=\"school_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"img/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div> 
             </form>
         </body>
@@ -141,7 +141,7 @@ function AddAdmin()
 function EditAdmin($id, $admins)
 {
     $html = LoadBootstrap();
-    $html .= "<form action=\"Admin.php\">
+    $html .= "<form action=\"Admin.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Add / Edit Admin</h2>
                     <hr>
@@ -183,7 +183,7 @@ function EditAdmin($id, $admins)
                     <img src=\"../img/Admins/{$admins[$id - 1]['image']}\" alt=\"admin_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"img/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div> 
             </form>
         </body>
