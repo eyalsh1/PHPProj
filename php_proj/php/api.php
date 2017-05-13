@@ -29,7 +29,7 @@ function login_check($uname, $pwd)
                 $_SESSION['role_id'] = $role_id;
                 $_SESSION['role'] = $role;
                 $session_data = [$name, $image, $role_id, $role];
-                echo json_encode($session_data);
+                //echo json_encode($session_data);
                 return true;
             }
         }

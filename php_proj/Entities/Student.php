@@ -37,6 +37,16 @@ class Student extends Person {
             echo "0";
     }
 
+    public function countCourseStudents($id)
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT COUNT(*) as total FROM students WHERE course_id='$id'");
+
+        return $result->fetch_assoc()['total'];
+    }
+
     public function insert()
     {
         $conn = DB::getInstance()->getConnection();
@@ -70,7 +80,7 @@ class Student extends Person {
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $result = $conn->query("SELECT students.id as id, students.name as name, students.phone as phone, students.email as email, students.image as image, courses.name as course FROM students INNER JOIN courses on students.course_id = courses.id");
+        $result = $conn->query("SELECT students.id as id, students.name as name, students.phone as phone, students.email as email, students.image as image, students.course_id as course_id, courses.name as course FROM students INNER JOIN courses on students.course_id = courses.id");
 
         $rows = array();
         if ($result->num_rows > 0)

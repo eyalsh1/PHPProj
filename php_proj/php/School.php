@@ -63,7 +63,8 @@ else
                 case 'course':
                     $id = $_GET['id'];
                     $html .= "<div class=\"col-sm-8\">";
-                    $html .= file_get_contents('../templates/ShowCourse.html');
+                    //$html .= file_get_contents('../templates/ShowCourse.html');
+                    $html .= ShowCourse($id, $courses, $students);
                     $html .= "</div>";
                     break;
 
@@ -71,7 +72,7 @@ else
                     $id = $_GET['id'];
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/ShowStudent.html');
-                    $html .= ShowStudent($id);
+                    $html .= ShowStudent($id, $students);
                     $html .= "</div>";
                     break;
             }
@@ -150,12 +151,54 @@ function AddEditStudent()
 {
 
 }
-function ShowCourse()
+function ShowCourse($id, $courses, $students)
 {
+    $html = LoadBootstrap();
+    $html .= "<form action=\"school.php\">
+                <div class=\"col-sm-10\">
+                    <h2>{$courses[$id-1]['name']}</h2>
+                </div>
+                <div class=\"col-sm-2\">
+                    <button type=\"submit\" class=\"btn btn-default\">Edit</button>
+                </div>
+        
+                <div class=\"col-sm-12\"><hr></div>
+        
+                <div class=\"col-sm-4\">
+                    <img src=\"../img/Courses/{$courses[$id - 1]['image']}\" alt=\"course_img\" width=100%>
+                    
+                </div>
+                <div class=\"col-sm-8\">
+                    <h1>{$courses[$id-1]['name']}, " . Student::countCourseStudents($id) . " Students</h1>
+                    <span>{$courses[$id-1]['description']}</span>
+                </div>
+        
+                <div class=\"col-sm-12\">
+                    <h2>Students</h2>
+                </div>";
+    $html .= printCourseStudents($id, $students);
 
+    $html .= "<input type=\"hidden\" name=\"action\" value=\"edit\">
+              <input type=\"hidden\" name=\"type\" value=\"course\">
+              <input type=\"hidden\" name=\"id\" value=\"{$id}\"> 
+            </form>
+        </body>
+        </html>";
+    return $html;
 }
 
-function ShowStudent($id)
+function printCourseStudents($id, $students)
+{
+    $html = "";
+    $rows = count($students);
+    for ($i = 0; $i < $rows; $i++) {
+        if ($students[$i]['course_id'] === $id)
+            $html .= "<label class=\"control-label col-sm-12\">{$students[$i]['name']}</label>";
+    }
+    return $html;
+}
+
+function ShowStudent($id, $students)
 {
     $html = LoadBootstrap();
     $html .= "<form action=\"school.php\">
@@ -169,13 +212,13 @@ function ShowStudent($id)
                 <div class=\"col-sm-12\"><hr></div>
         
                 <div class=\"col-sm-6\">
-                    <img src=\"../img/school_img.png\" alt=\"school_img\" width=100%>
+                    <img src=\"../img/Students/{$students[$id-1]['image']}\" alt=\"student_img\" width=100%>
                 </div>
                 <div class=\"col-sm-6\">
-                    <h3>Yossi Chohen</h3>
-                    <h3>052-1231234</h3>
-                    <h3>yossi@gmail.com</h3>
-                    <h3>Course: DBA</h3>
+                    <h3>{$students[$id-1]['name']}</h3>
+                    <h3>{$students[$id-1]['phone']}</h3>
+                    <h3>{$students[$id-1]['email']}</h3>
+                    <h3>Course: {$students[$id-1]['course']}</h3>
                 </div>
                 
                 <input type=\"hidden\" name=\"action\" value=\"edit\">

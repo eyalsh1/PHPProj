@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2017 at 02:30 PM
+-- Generation Time: May 13, 2017 at 05:05 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -41,9 +41,9 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `name`, `phone`, `email`, `image`, `password`, `role_id`) VALUES
-(1, 'Samael', NULL, NULL, 'samael.jpg', '$2y$10$sFtSOrO1sva6xMYGWrCw4ePa.VbzDdihtfNzDmopA7oC4nVIqQo2.', 1),
-(2, 'Death', NULL, NULL, 'death.jpg', '$2y$10$pxBTCYbCckUL4..p5.4h8utaoExhqNNOxMd7vPx2rptcgzId4BgnK', 2),
-(3, 'War', NULL, NULL, 'war.jpg', '$2y$10$q83ejOdyMSzBIC1W/EWGE./VGetmTtMUsIBEXnURfUBneBAO31lhe', 3);
+(1, 'Eyal Shalom', '054-2291031', 'eyal.shalom@gmail.com', 'Eyal.jpg', '$2y$10$oeeAhKi/KeY4G4CmC7HYT.tNrhZjvnZQhD.WYRhZBpnnFnFASxeri', 1),
+(2, 'Orit Shalom', '054-7333511', 'orit.shalom@gmail.com', 'Orit.jpg', '$2y$10$0OLgF5dpccvDOKrN5Aq2r.LIUWFdaJjjJ5xFd492FPS3qgA3oVIHO', 2),
+(3, 'Itai Shalom', '054-12345678', 'itai.shalom@gmail.com', 'Itai.jpg', '$2y$10$YVvVn1bSukpbzfWecY51PezhUfVLN1m/FCPiP8DxXGjjP/ySnSjye', 3);
 
 -- --------------------------------------------------------
 
@@ -63,9 +63,9 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `name`, `description`, `image`) VALUES
-(1, 'Frontend', 'Frontend development', 'fed.png'),
-(2, 'Backend', 'Backend development', 'Backend.png'),
-(3, 'DBA', 'Database development', 'db.png');
+(1, 'Frontend', 'Frontend development', 'Frontend.jpg'),
+(2, 'Backend', 'Backend development', 'Backend.jpg'),
+(3, 'DBA', 'Database developer', 'DBA.jpg');
 
 -- --------------------------------------------------------
 
@@ -107,9 +107,9 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `name`, `phone`, `email`, `image`, `course_id`) VALUES
-(1, 'Bone Man', NULL, NULL, 'bone.jpg', 1),
-(2, 'Otep', NULL, NULL, 'otep.jpg', 2),
-(3, 'Dany Filth', NULL, NULL, 'filth.jpg', 3);
+(1, 'Rona Folgar', '03-6684984', 'rona@gmail.com', 'Rona.jpg', 1),
+(2, 'Oleg Kalm', '09-7784984', 'oleg@walla.com', 'Oleg.jpg', 2),
+(3, 'Dany Fun', '054-7783984', 'dany@yahoo.com', 'Dany.jpg', 3);
 
 --
 -- Indexes for dumped tables
@@ -150,7 +150,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `courses`
 --
@@ -165,7 +165,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
