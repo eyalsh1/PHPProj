@@ -1,22 +1,18 @@
 <?php
-//include 'Person.php';
-//include 'DB.php';
 
 class Course implements ISavable
 {
-    //use SelectAll;
     public $id;
     public $name;
     public $description;
-    //public $img;
-    //private static $table_name = 'courses';
+    public $image;
 
-    function __construct($id, $name, $description)
+    function __construct($id, $name, $description, $image)
     {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
-        //$this->img = $img;
+        $this->image = $image;
     }
 
     public function count()
@@ -40,8 +36,8 @@ class Course implements ISavable
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $stmt = $conn->prepare("INSERT INTO courses (name, description) VALUES (?, ?)");
-        $stmt->bind_param('ss', $this->name, $this->description);
+        $stmt = $conn->prepare("INSERT INTO courses (name, description, image) VALUES (?, ?, ?)");
+        $stmt->bind_param('sss', $this->name, $this->description, $this->image);
         $stmt->execute();
 
         if ($stmt->error)
@@ -55,7 +51,7 @@ class Course implements ISavable
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $result = $conn->query("DELETE FROM courses WHERE id = '$id'");
+        $result = $conn->query("DELETE FROM courses WHERE id = $id");
 
         if ($result)
             echo "delete course success";
@@ -83,17 +79,44 @@ class Course implements ISavable
         return $rows;
     }
 
-    /*public function printAll()
+    /*public function GetName($id)
     {
-        $html = "<h3>Courses</h3>";
-        $rows = self::read();
-        for ($i=0, $count = count($rows); $i < $count; $i++)
-        {
-            $html .= "<a href=\"?page=courses&course_id={$rows[$i]['id']}\">";
-            $html .= "<figure><img src=\"../img/courses/{$rows[$i]['image']}\" width=100%>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}</figcaption>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["description"]}</figcaption></a></figure><br>";
-        }
-        return $html;
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT name FROM courses WHERE id='$id'");
+
+        return $result->fetch_assoc()['name'];
     }*/
+
+    public function get($id)
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT name, description, image FROM courses WHERE id=$id");
+
+        return $result->fetch_assoc();
+    }
+
+    public function update($id, $name, $description, $image)
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        if ($image != '') {
+            $stmt = $conn->prepare("UPDATE courses SET name=?, description=?, image=? WHERE id=?");
+            $stmt->bind_param('sssi', $name, $description, $image, $id);
+        }
+        else {
+            $stmt = $conn->prepare("UPDATE courses SET name=?, description=? WHERE id=?");
+            $stmt->bind_param('ssi', $name, $description, $id);
+        }
+        $stmt->execute();
+
+        if ($stmt->error)
+            echo $stmt->error;
+        else
+            echo "Course: ". $name ." was successfully updated";
+    }
 }

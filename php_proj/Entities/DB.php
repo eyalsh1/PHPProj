@@ -25,20 +25,3 @@ class DB
         return $this->conn;
     }
 }
-
-/*
- * Old Vresion
-class DB {
-    private static $conn;
-
-    public function getConnection() {
-        if (empty(static::$conn)) {
-            return static::$conn = new mysqli('localhost', 'root', '', 'php_proj');
-        } else {
-            return static::$conn;
-        }
-    }
-
-    private function __construct() {}
-}
-*/

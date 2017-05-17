@@ -1,21 +1,9 @@
 <?php
-//include 'Person.php';
-//include 'DB.php';
 
 class Admin extends Person {
     public $image;
     public $role_id;
     public $password;
-	/*public $role_name;
-	use SelectAll;
-	private static $table_name = 'admins';
-
-	function __construct($id, $name, $img, $password = null, $role_id = null, $role_name = null) {
-		parent::__construct($id, $name, $img);
-		$this->password = $password;
-		$this->role_id = $role_id;
-		$this->role_name = $role_name;
-	}*/
 
     function __construct($id, $name, $phone, $email, $image, $role_id, $password)
     {
@@ -61,7 +49,7 @@ class Admin extends Person {
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $result = $conn->query("DELETE FROM admins WHERE id = '$id'");
+        $result = $conn->query("DELETE FROM admins WHERE id = $id");
 
         if($result)
             echo "delete admin success";
@@ -74,7 +62,7 @@ class Admin extends Person {
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $result = $conn->query("SELECT admins.id as id, admins.name as name, admins.phone as phone, admins.email as email, admins.image as image, admins.role_id as role_id,roles.name as role FROM admins INNER JOIN roles on roles.id = admins.role_id");
+        $result = $conn->query("SELECT admins.id as id, admins.name as name, admins.phone as phone, admins.email as email, admins.image as image, admins.role_id as role_id, roles.name as role FROM admins INNER JOIN roles on roles.id = admins.role_id");
 
         $rows = array();
 
@@ -89,6 +77,35 @@ class Admin extends Person {
         return $rows;
     }
 
+    public function get($id)
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT admins.name as name, admins.phone as phone, admins.email as email, admins.image as image, admins.password as password, admins.role_id as role_id, roles.name as role FROM admins INNER JOIN roles on roles.id = admins.role_id WHERE admins.id=$id");
+
+        return $result->fetch_assoc();
+    }
+
+    public function GetRoles()
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT * FROM roles");
+
+        $roles = array();
+
+        if ($result->num_rows > 0)
+        {
+            while ($role = $result->fetch_assoc())
+                $roles[] = $role;
+            //echo json_encode($roles);
+        }
+        else
+            echo "0 results";
+        return $roles;
+    }
     /*public function printAll()
     {
         $html = "<h3>Admins</h3>";

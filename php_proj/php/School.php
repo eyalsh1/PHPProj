@@ -6,6 +6,7 @@ include 'Header.php';
 //echo Course::printAll();
 //echo Student::printAll();
 //print_r($_SESSION);
+//print_r($_FILES);
 //print_r($courses);
 //print_r($students);
 
@@ -28,14 +29,14 @@ else
 
         case 'insert':
         switch ($_GET['type']) {
-                case 'course':
+                case 'course': // Shows Add Course form
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/AddEditCourse.html');
                     $html .= AddCourse();
                     $html .= "</div>";
                     break;
 
-                case 'student':
+                case 'student': // Shows Add Student form
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/AddEditStudent.html');
                     $html .= AddStudent($courses);
@@ -46,19 +47,17 @@ else
 
         case 'edit':
             switch ($_GET['type']) {
-                case 'course':
-                    $id = $_GET['id'];
+                case 'course': // Shows Edit Course form
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/AddEditCourse.html');
-                    $html .= EditCourse($id, $courses);
+                    $html .= EditCourse($_GET['id']);
                     $html .= "</div>";
                     break;
 
-                case 'student':
-                    $id = $_GET['id'];
+                case 'student': // Shows Edit Student form
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/AddEditStudent.html');
-                    $html .= EditStudent($id, $courses, $students);
+                    $html .= EditStudent($_GET['id'], $courses);
                     $html .= "</div>";
                     break;
             }
@@ -66,22 +65,63 @@ else
 
         case 'show':
             switch ($_GET['type']) {
-                case 'course':
-                    $id = $_GET['id'];
+                case 'course': // Shows Course
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/ShowCourse.html');
-                    $html .= ShowCourse($id, $courses, $students);
+                    $html .= ShowCourse($_GET['id'], $students);
                     $html .= "</div>";
                     break;
 
-                case 'student':
-                    $id = $_GET['id'];
+                case 'student': // Shows Student
                     $html .= "<div class=\"col-sm-8\">";
                     //$html .= file_get_contents('../templates/ShowStudent.html');
-                    $html .= ShowStudent($id, $students);
+                    $html .= ShowStudent($_GET['id']);
                     $html .= "</div>";
                     break;
             }
+            break;
+
+        case 'save':
+            switch ($_GET['type']) {
+                case 'course': // Update Course
+                    Course::update($_GET['id'], $_GET['name'], $_GET['description'], $_GET['img']);
+                    break;
+
+                case 'student': // Update Student
+                    Student::update($_GET['id'], $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], $_GET['course_id']);
+                    break;
+            }
+            header("Location: School.php");
+            break;
+
+        case 'add':
+            switch ($_GET['type']) {
+                case 'course': // Add Course
+                    $course = new Course('', $_GET['name'], $_GET['description'], $_GET['img']);
+                    $course->insert();
+                    break;
+
+                case 'student': // Add Student
+                    $student = new Student('', $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], $_GET['course_id']);
+                    $student->insert();
+                    //$uploadfile = 'C:\\xampp\htdocs\\php_proj\\img\\Students\\' . $image;
+                    //UploadFile($uploadfile);
+                    break;
+            }
+            header("Location: School.php");
+            break;
+
+        case 'delete':
+            switch ($_GET['type']) {
+                case 'course': // Delete Course
+                    Course::delete($_GET['id']);
+                    break;
+
+                case 'student': // Delete Student
+                    Student::delete($_GET['id']);
+                    break;
+            }
+            header("Location: School.php");
             break;
 
         default:
@@ -148,39 +188,43 @@ function buildStudentLink($students, $i)
     return $link;
 }
 
-function EditCourse($id, $courses)
+function EditCourse($id)
 {
+    $course = Course::get($id);
     $html = LoadBootstrap();
     $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
-                    <h2>Add / Edit Course</h2>
+                    <h2>Edit Course</h2>
                     <hr>
                 </div>
             
                 <div class=\"col-sm-2\">
-                    <button type=\"submit\" name=\"save-btn\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
+                    <button type=\"submit\" name=\"action\" value=\"save\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
                 </div>
                 <div class=\"col-sm-10\">
-                    <button type=\"submit\" name=\"delete-btn\" class=\"btn btn-default\">Delete</button>
+                    <button type=\"submit\" name=\"action\" value=\"delete\" class=\"btn btn-default\">Delete</button>
                 </div>
             
+                <input type=\"hidden\" name=\"type\" value=\"course\">
+                <input type=\"hidden\" name=\"id\" value=\"{$id}\">
+                
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\"  value=\"{$courses[$id-1]['name']}\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\"  value=\"{$course['name']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Description:</label>
                 <div class=\"col-sm-10\">
-                    <textarea class=\"form-control\" rows=\"5\" name=\"description\">{$courses[$id-1]['description']}</textarea>
+                    <textarea class=\"form-control\" rows=\"5\" name=\"description\">{$course['description']}</textarea>
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/Courses/{$courses[$id-1]['image']}\" alt=\"course_img\" width=100%>
+                    <img src=\"../img/Courses/{$course['image']}\" alt=\"course_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
                     <input type=\"file\" name=\"img\" accept=\"image/*\">
@@ -203,20 +247,22 @@ function AddCourse()
     $html = LoadBootstrap();
     $html .= "<form action=\"School.php\">
                 <div class=\"col-sm-12\">
-                    <h2>Add / Edit Course</h2>
+                    <h2>Add Course</h2>
                     <hr>
                 </div>
             
                 <div class=\"col-sm-2\">
-                    <button type=\"submit\" name=\"save-btn\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
+                    <button type=\"submit\" name=\"action\" value=\"add\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
                 </div>
                 <div class=\"col-sm-10\"></div>
+            
+                <input type=\"hidden\" name=\"type\" value=\"course\">
             
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Description:</label>
@@ -239,42 +285,46 @@ function AddCourse()
     return $html;
 }
 
-function EditStudent($id, $courses, $students)
+function EditStudent($id, $courses)
 {
+    $student = Student::get($id);
     $html = LoadBootstrap();
     $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
-                    <h2>Add / Edit Student</h2>
+                    <h2>Edit Student</h2>
                     <hr>
                 </div>
             
                 <div class=\"col-sm-2\">
-                    <button type=\"submit\" name=\"save-btn\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
+                    <button type=\"submit\" name=\"action\" value=\"save\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
                 </div>
                 <div class=\"col-sm-10\">
-                    <button type=\"submit\" name=\"delete-btn\" class=\"btn btn-default\">Delete</button>
+                    <button type=\"submit\" name=\"action\" value=\"delete\" class=\"btn btn-default\">Delete</button>
                 </div>
+            
+                <input type=\"hidden\" name=\"type\" value=\"student\">
+                <input type=\"hidden\" name=\"id\" value=\"{$id}\">
             
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\" value=\"{$students[$id-1]['name']}\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\" value=\"{$student['name']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\" value=\"{$students[$id-1]['phone']}\">
+                    <input type=\"text\" class=\"form-control\" name=\"phone\" value=\"{$student['phone']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"email\" class=\"form-control\" name=\"email\" value=\"{$students[$id-1]['email']}\">
+                    <input type=\"email\" class=\"form-control\" name=\"email\" value=\"{$student['email']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/Students/{$students[$id-1]['image']}\" alt=\"student_img\" width=100%>
+                    <img src=\"../img/Students/{$student['image']}\" alt=\"img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
                     <input type=\"file\" name=\"img\" accept=\"image/*\">
@@ -284,8 +334,8 @@ function EditStudent($id, $courses, $students)
             
                 <label class=\"col-sm-2\">Courses:</label>
                 <div class=\"col-sm-10\">";
-    $html .= printStudentCourses($id, $courses);
-    $html .= "</div>  
+    $html .= PrintStudentCourses($student['course_id'], $courses);
+    $html .= "</div>
             </form>
         </body>
         </html>";
@@ -295,32 +345,35 @@ function EditStudent($id, $courses, $students)
 function AddStudent($courses)
 {
     $html = LoadBootstrap();
+    //$html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\">
     $html .= "<form action=\"School.php\">
                 <div class=\"col-sm-12\">
-                    <h2>Add / Edit Student</h2>
+                    <h2>Add Student</h2>
                     <hr>
                 </div>
             
                 <div class=\"col-sm-2\">
-                    <button type=\"submit\" name=\"save-btn\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
+                    <button type=\"submit\" name=\"action\" value=\"add\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
                 </div>
                 <div class=\"col-sm-10\"></div>
+            
+                <input type=\"hidden\" name=\"type\" value=\"student\">
             
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\">
+                    <input type=\"text\" class=\"form-control\" name=\"phone\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"email\" class=\"form-control\" name=\"email\">
+                    <input type=\"email\" class=\"form-control\" name=\"email\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Image:</label>
@@ -328,14 +381,14 @@ function AddStudent($courses)
                     <img src=\"../img/school_img.png\" alt=\"student_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" required>
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"col-sm-2\">Courses:</label>
                 <div class=\"col-sm-10\">";
-    $html .= printStudentCourses(0, $courses);
+    $html .= PrintStudentCourses(0, $courses);
     $html .= "</div>  
             </form>
         </body>
@@ -343,13 +396,13 @@ function AddStudent($courses)
     return $html;
 }
 
-function printStudentCourses($id, $courses)
+function PrintStudentCourses($id, $courses)
 {
     $html = "";
     $rows = count($courses);
     for ($i = 0; $i < $rows; $i++) {
         $html .= "<label class=\"radio-inline\">
-                    <input type=\"radio\" name=\"optradio\" value=\"{$courses[$i]['id']}\"";
+                    <input type=\"radio\" name=\"course_id\" value=\"{$courses[$i]['id']}\" required";
         if ($courses[$i]['id'] === $id)
             $html .= " checked";
         $html .= ">{$courses[$i]['name']}</label>";
@@ -357,12 +410,13 @@ function printStudentCourses($id, $courses)
     return $html;
 }
 
-function ShowCourse($id, $courses, $students)
+function ShowCourse($id, $students)
 {
+    $course = Course::get($id);
     $html = LoadBootstrap();
     $html .= "<form action=\"School.php\">
                 <div class=\"col-sm-10\">
-                    <h2>{$courses[$id-1]['name']}</h2>
+                    <h2>{$course['name']}</h2>
                 </div>
                 <div class=\"col-sm-2\">
                     <button type=\"submit\" class=\"btn btn-default\">Edit</button>
@@ -371,23 +425,23 @@ function ShowCourse($id, $courses, $students)
                 <div class=\"col-sm-12\"><hr></div>
         
                 <div class=\"col-sm-4\">
-                    <img src=\"../img/Courses/{$courses[$id - 1]['image']}\" alt=\"course_img\" width=100%>
+                    <img src=\"../img/Courses/{$course['image']}\" alt=\"course_img\" width=100%>
                     
                 </div>
                 <div class=\"col-sm-8\">
-                    <h1>{$courses[$id-1]['name']}, " . Student::countCourseStudents($id) . " Student";
+                    <h1>{$course['name']}, " . Student::countCourseStudents($id) . " Student";
 
     if (Student::countCourseStudents($id) != 1)
         $html .= "s"; // Add s for plural
 
     $html .= "</h1>
-                    <span>{$courses[$id-1]['description']}</span>
+                    <span>{$course['description']}</span>
                 </div>
         
                 <div class=\"col-sm-12\">
                     <h2>Students</h2>
                 </div>";
-    $html .= printCourseStudents($id, $students);
+    $html .= PrintCourseStudents($id, $students);
 
     $html .= "<input type=\"hidden\" name=\"action\" value=\"edit\">
               <input type=\"hidden\" name=\"type\" value=\"course\">
@@ -398,7 +452,7 @@ function ShowCourse($id, $courses, $students)
     return $html;
 }
 
-function printCourseStudents($id, $students)
+function PrintCourseStudents($id, $students)
 {
     $html = "";
     $rows = count($students);
@@ -409,8 +463,9 @@ function printCourseStudents($id, $students)
     return $html;
 }
 
-function ShowStudent($id, $students)
+function ShowStudent($id)
 {
+    $student = Student::get($id);
     $html = LoadBootstrap();
     $html .= "<form action=\"School.php\">
                 <div class=\"col-sm-1\">
@@ -423,13 +478,13 @@ function ShowStudent($id, $students)
                 <div class=\"col-sm-12\"><hr></div>
         
                 <div class=\"col-sm-6\">
-                    <img src=\"../img/Students/{$students[$id-1]['image']}\" alt=\"student_img\" width=100%>
+                    <img src=\"../img/Students/{$student['image']}\" alt=\"student_img\" width=100%>
                 </div>
                 <div class=\"col-sm-6\">
-                    <h3>{$students[$id-1]['name']}</h3>
-                    <h3>{$students[$id-1]['phone']}</h3>
-                    <h3>{$students[$id-1]['email']}</h3>
-                    <h3>Course: {$students[$id-1]['course']}</h3>
+                    <h3>{$student['name']}</h3>
+                    <h3>{$student['phone']}</h3>
+                    <h3>{$student['email']}</h3>
+                    <h3>Course: {$student['course']}</h3>
                 </div>
                 
                 <input type=\"hidden\" name=\"action\" value=\"edit\">
@@ -439,6 +494,21 @@ function ShowStudent($id, $students)
         </body>
         </html>";
     return $html;
+}
+
+function UploadFile($uploadfile)
+{
+    echo $uploadfile;
+
+    if (move_uploaded_file($_FILES['img']['tmp_name'], $uploadfile))
+        echo "File is valid, and was successfully uploaded";
+    else
+        echo "Upload failed";
+
+    echo '<pre>';
+    echo 'Here is some more debugging info:';
+    print_r($_FILES);
+    print "</pre>";
 }
 
 function LoadBootstrap()
@@ -452,6 +522,7 @@ function LoadBootstrap()
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
                 <link rel="stylesheet" type="text/css" href="../css/index.css">
+                <script src="School.js"></script>
             </head>
             <body>';
     return $html;

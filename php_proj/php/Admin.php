@@ -31,10 +31,9 @@ else
             break;
 
         case 'edit':
-            $id = $_GET['id'];
             $html .= "<div class=\"col-sm-8\">";
             //$html .= file_get_contents('../templates/AddEditAdmin.html');
-            $html .= EditAdmin($id, $admins);
+            $html .= EditAdmin($_GET['id']);
             $html .= "</div>";
             break;
 
@@ -91,7 +90,7 @@ function AddAdmin()
     $html = LoadBootstrap();
     $html .= "<form action=\"Admin.php\">
                 <div class=\"col-sm-12\">
-                    <h2>Add / Edit Admin</h2>
+                    <h2>Add Admin</h2>
                     <hr>
                 </div>
             
@@ -117,10 +116,16 @@ function AddAdmin()
                     <input type=\"email\" class=\"form-control\" name=\"email\">
                 </div>
             
-                <label class=\"control-label col-sm-2\">Role:</label>
+                <label class=\"control-label col-sm-2\">Password:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"role\">
+                    <input type=\"password\" class=\"form-control\" name=\"password\">
                 </div>
+            
+                <label class=\"control-label col-sm-2\">Role:</label>
+                <div class=\"col-sm-10\">";
+                    //<input type=\"text\" class=\"form-control\" name=\"role\">
+    $html .= AddRolesSelect('');
+    $html .= "</div>
             
                 <div class=\"col-sm-12\"><br></div>
             
@@ -137,57 +142,81 @@ function AddAdmin()
     return $html;
 }
 
-
-function EditAdmin($id, $admins)
+function EditAdmin($id)
 {
+    $admin = Admin::get($id);
     $html = LoadBootstrap();
     $html .= "<form action=\"Admin.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
-                    <h2>Add / Edit Admin</h2>
+                    <h2>Edit Admin</h2>
                     <hr>
                 </div>
             
                 <div class=\"col-sm-2\">
-                    <button type=\"submit\" name=\"save-btn\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
+                    <button type=\"submit\" name=\"action\" value=\"save\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
                 </div>
                 <div class=\"col-sm-10\">
-                    <button type=\"submit\" name=\"delete-btn\" class=\"btn btn-default\">Delete</button>
+                    <button type=\"submit\" name=\"action\" value=\"delete\" class=\"btn btn-default\">Delete</button>
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\" value=\"{$admins[$id - 1]['name']}\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\" value=\"{$admin['name']}\">
                 </div>
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\" value=\"{$admins[$id - 1]['phone']}\">
+                    <input type=\"text\" class=\"form-control\" name=\"phone\" value=\"{$admin['phone']}\">
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"email\" class=\"form-control\" name=\"email\" value=\"{$admins[$id - 1]['email']}\">
+                    <input type=\"email\" class=\"form-control\" name=\"email\" value=\"{$admin['email']}\">
                 </div>
-            
-                <label class=\"control-label col-sm-2\">Role:</label>
+                
+                <label class=\"control-label col-sm-2\">Password:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"role\" value=\"{$admins[$id - 1]['role']}\">
+                    <input type=\"password\" class=\"form-control\" name=\"password\" value=\"{$admin['password']}\">
                 </div>
-            
+                
+                <label class=\"control-label col-sm-2\">Role:</label>
+                <div class=\"col-sm-10\">";
+                    //<input type=\"text\" class=\"form-control\" name=\"role\" value=\"{$admin['role']}\">
+    $html .= AddRolesSelect($admin['role']);
+    $html .= "</div>
+           
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/Admins/{$admins[$id - 1]['image']}\" alt=\"admin_img\" width=100%>
+                    <img src=\"../img/Admins/{$admin['image']}\" alt=\"admin_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
                     <input type=\"file\" name=\"img\" accept=\"image/*\">
                 </div> 
+                
+                
             </form>
         </body>
         </html>";
+    return $html;
+}
+
+function AddRolesSelect($role)
+{
+    $html = "<select class=\"form-control\" name=\"role\"><option></option>";
+
+    $roles = Admin::GetRoles();
+    $rows = count($roles);
+    for ($i = 0; $i < $rows; $i++) {
+        $html .= "<option";
+        if ($role === $roles[$i]['name'])
+            $html .= " selected=\"selected\"";
+        $html .= ">{$roles[$i]['name']}</option>";
+    }
+    $html .= "</select>";
     return $html;
 }
 
