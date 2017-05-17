@@ -125,7 +125,6 @@ else
             break;
 
         default:
-
             break;
     }
 }
@@ -277,7 +276,7 @@ function AddCourse()
                     <img src=\"../img/school_img.png\" alt=\"course_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" required>
                 </div>
             </form>
         </body>
@@ -314,7 +313,7 @@ function EditStudent($id, $courses)
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\" value=\"{$student['phone']}\" required>
+                    <input type=\"tel\" class=\"form-control\" name=\"phone\" value=\"{$student['phone']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>
@@ -368,7 +367,7 @@ function AddStudent($courses)
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\" required>
+                    <input type=\"tel\" class=\"form-control\" name=\"phone\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>

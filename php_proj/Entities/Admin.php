@@ -49,9 +49,9 @@ class Admin extends Person {
         $conn = DB::getInstance()->getConnection();
         if ($conn->errno) {echo $conn->error; die();}
 
-        $result = $conn->query("DELETE FROM admins WHERE id = $id");
+        $result = $conn->query("DELETE FROM admins WHERE id = '$id'");
 
-        if($result)
+        if ($result)
             echo "delete admin success";
         else
             echo "delete admin failed";
@@ -106,20 +106,37 @@ class Admin extends Person {
             echo "0 results";
         return $roles;
     }
-    /*public function printAll()
+
+    public function GetRoleId($role)
     {
-        $html = "<h3>Admins</h3>";
-        $rows = self::read();
-        for ($i=0, $count = count($rows); $i < $count; $i++)
-        {
-            $html .= "<a href=\"?page=admins&admin_id={$rows[$i]['id']}\">";
-            $html .= "<figure><img src=\"../img/admins/{$rows[$i]['image']}\" width=100%>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}, {$rows[$i]["role"]}</figcaption>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["phone"]}</figcaption>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["email"]}</figcaption></a></figure><br>";
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        $result = $conn->query("SELECT id FROM roles WHERE name='$role'");
+
+        return $result->fetch_assoc();
+    }
+
+    public function update($id, $name, $phone, $email, $image, $role_id, $password)
+    {
+        $conn = DB::getInstance()->getConnection();
+        if ($conn->errno) {echo $conn->error; die();}
+
+        if ($image != '') {
+            $stmt = $conn->prepare("UPDATE admins SET name=?, phone=?, email=?, image=?, role_id=?, password=? WHERE id=?");
+            $stmt->bind_param('ssssisi', $name, $phone, $email, $image, $role_id, $password, $id);
         }
-        return $html;
-    }*/
+        else {
+            $stmt = $conn->prepare("UPDATE admins SET name=?, phone=?, email=?, role_id=?, password=? WHERE id=?");
+            $stmt->bind_param('sssisi', $name, $phone, $email, $role_id, $password, $id);
+        }
+        $stmt->execute();
+
+        if ($stmt->error)
+            echo $stmt->error;
+        else
+            echo "Admin: ". $name ." was successfully updated";
+    }
 
     public function login($username, $password)
     {

@@ -23,18 +23,34 @@ else
             header("Location: ../index.html");
             break;
 
-        case 'insert':
+        case 'insert': // Shows Add Admin form
             $html .= "<div class=\"col-sm-8\">";
             //$html .= file_get_contents('../templates/AddEditAdmin.html');
             $html .= AddAdmin();
             $html .= "</div>";
             break;
 
-        case 'edit':
+        case 'edit': // Shows Edit Admin form
             $html .= "<div class=\"col-sm-8\">";
             //$html .= file_get_contents('../templates/AddEditAdmin.html');
             $html .= EditAdmin($_GET['id']);
             $html .= "</div>";
+            break;
+
+        case 'save': // Update Admin
+            Admin::update($_GET['id'], $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], Admin::GetRoleId($_GET['role'])['id'], $_GET['password']);
+            header("Location: Admin.php");
+            break;
+
+        case 'add': // Add Admin
+            $admin = new Admin('', $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], Admin::GetRoleId($_GET['role'])['id'], $_GET['password']);
+            $admin->insert();
+            header("Location: Admin.php");
+            break;
+
+        case 'delete':
+            Admin::delete($_GET['id']);
+            header("Location: Admin.php");
             break;
 
         default:
@@ -95,7 +111,7 @@ function AddAdmin()
                 </div>
             
                 <div class=\"col-sm-2\">
-                    <button type=\"submit\" name=\"save-btn\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
+                    <button type=\"submit\" name=\"action\" value=\"add\" class=\"btn btn-default\" style=\"width:100%;\">Save</button>
                 </div>
                 <div class=\"col-sm-10\"></div>
             
@@ -103,22 +119,22 @@ function AddAdmin()
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\">
+                    <input type=\"tel\" class=\"form-control\" name=\"phone\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"email\" class=\"form-control\" name=\"email\">
+                    <input type=\"email\" class=\"form-control\" name=\"email\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Password:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"password\" class=\"form-control\" name=\"password\">
+                    <input type=\"password\" class=\"form-control\" name=\"password\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Role:</label>
@@ -134,7 +150,7 @@ function AddAdmin()
                     <img src=\"../img/school_img.png\" alt=\"school_img\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" required>
                 </div> 
             </form>
         </body>
@@ -159,26 +175,28 @@ function EditAdmin($id)
                     <button type=\"submit\" name=\"action\" value=\"delete\" class=\"btn btn-default\">Delete</button>
                 </div>
             
+                <input type=\"hidden\" name=\"id\" value=\"{$id}\">
+                
                 <div class=\"col-sm-12\"><br></div>
             
                 <label class=\"control-label col-sm-2\">Name:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"name\" value=\"{$admin['name']}\">
+                    <input type=\"text\" class=\"form-control\" name=\"name\" value=\"{$admin['name']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Phone:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"text\" class=\"form-control\" name=\"phone\" value=\"{$admin['phone']}\">
+                    <input type=\"tel\" class=\"form-control\" name=\"phone\" value=\"{$admin['phone']}\" required>
                 </div>
             
                 <label class=\"control-label col-sm-2\">Email:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"email\" class=\"form-control\" name=\"email\" value=\"{$admin['email']}\">
+                    <input type=\"email\" class=\"form-control\" name=\"email\" value=\"{$admin['email']}\" required>
                 </div>
                 
                 <label class=\"control-label col-sm-2\">Password:</label>
                 <div class=\"col-sm-10\">
-                    <input type=\"password\" class=\"form-control\" name=\"password\" value=\"{$admin['password']}\">
+                    <input type=\"password\" class=\"form-control\" name=\"password\" value=\"{$admin['password']}\" required>
                 </div>
                 
                 <label class=\"control-label col-sm-2\">Role:</label>
@@ -206,7 +224,7 @@ function EditAdmin($id)
 
 function AddRolesSelect($role)
 {
-    $html = "<select class=\"form-control\" name=\"role\"><option></option>";
+    $html = "<select class=\"form-control\" name=\"role\" required><option></option>";
 
     $roles = Admin::GetRoles();
     $rows = count($roles);
