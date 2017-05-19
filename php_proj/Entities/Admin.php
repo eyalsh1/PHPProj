@@ -35,7 +35,7 @@ class Admin extends Person {
         if ($conn->errno) {echo $conn->error; die();}
 
         $stmt = $conn->prepare("INSERT INTO admins (name, phone, email, image, role_id, password) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('ssssis', $this->name, $this->phone, $this->email, $this->image, $this->role_id, $this->password);
+        $stmt->bind_param('ssssis', $this->name, $this->phone, $this->email, $this->image, $this->role_id, password_hash($this->password, PASSWORD_DEFAULT));
         $stmt->execute();
 
         if ($stmt->error)
@@ -124,11 +124,11 @@ class Admin extends Person {
 
         if ($image != '') {
             $stmt = $conn->prepare("UPDATE admins SET name=?, phone=?, email=?, image=?, role_id=?, password=? WHERE id=?");
-            $stmt->bind_param('ssssisi', $name, $phone, $email, $image, $role_id, $password, $id);
+            $stmt->bind_param('ssssisi', $name, $phone, $email, $image, $role_id, password_hash($password, PASSWORD_DEFAULT), $id);
         }
         else {
             $stmt = $conn->prepare("UPDATE admins SET name=?, phone=?, email=?, role_id=?, password=? WHERE id=?");
-            $stmt->bind_param('sssisi', $name, $phone, $email, $role_id, $password, $id);
+            $stmt->bind_param('sssisi', $name, $phone, $email, $role_id, password_hash($password, PASSWORD_DEFAULT), $id);
         }
         $stmt->execute();
 

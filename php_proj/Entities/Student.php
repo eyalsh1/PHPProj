@@ -115,18 +115,4 @@ class Student extends Person {
         else
             echo "Student: ". $name ." was successfully updated";
     }
-
-    /*public function printAll()
-    {
-        $html = "<h3>Students</h3>";
-        $rows = self::read();
-        for ($i=0, $count = count($rows); $i < $count; $i++)
-        {
-            $html .= "<a href=\"?page=students&student_id={$rows[$i]['id']}\">";
-            $html .= "<figure><img src=\"../img/students/{$rows[$i]['image']}\" width=100%>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["name"]}</figcaption>";
-            $html .= "<figcaption style=color:blue;>{$rows[$i]["phone"]}</figcaption></a></figure><br>";
-        }
-        return $html;
-    }*/
 }

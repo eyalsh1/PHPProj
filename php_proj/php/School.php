@@ -421,9 +421,12 @@ function ShowCourse($id, $students)
                 <div class=\"col-sm-10\">
                     <h2>{$course['name']}</h2>
                 </div>
-                <div class=\"col-sm-2\">
-                    <button type=\"submit\" class=\"btn btn-default\">Edit</button>
-                </div>
+                <div class=\"col-sm-2\">";
+
+    if ($_SESSION['role'] != "sales")
+        $html .= "<button type=\"submit\" class=\"btn btn-default\">Edit</button>";
+
+    $html .= "</div>
         
                 <div class=\"col-sm-12\"><hr></div>
         

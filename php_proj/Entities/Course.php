@@ -79,16 +79,6 @@ class Course implements ISavable
         return $rows;
     }
 
-    /*public function GetName($id)
-    {
-        $conn = DB::getInstance()->getConnection();
-        if ($conn->errno) {echo $conn->error; die();}
-
-        $result = $conn->query("SELECT name FROM courses WHERE id='$id'");
-
-        return $result->fetch_assoc()['name'];
-    }*/
-
     public function get($id)
     {
         $conn = DB::getInstance()->getConnection();
