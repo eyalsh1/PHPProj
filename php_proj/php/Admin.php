@@ -104,6 +104,7 @@ function buildAdminLink($admins, $i)
 function AddAdmin()
 {
     $html = LoadBootstrap();
+    $html .= LoadScript();
     $html .= "<form action=\"Admin.php\">
                 <div class=\"col-sm-12\">
                     <h2>Add Admin</h2>
@@ -147,10 +148,10 @@ function AddAdmin()
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/school_img.png\" alt=\"school_img\" width=100%>
+                    <img src=\"../img/school_img.png\" alt=\"school_img\" id=\"addAdminImg\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\" required>
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" onchange=\"changeImg(document.getElementById('addAdminImg'), this)\" required>
                 </div> 
             </form>
         </body>
@@ -162,6 +163,7 @@ function EditAdmin($id)
 {
     $admin = Admin::get($id);
     $html = LoadBootstrap();
+    $html .= LoadScript();
     $html .= "<form action=\"Admin.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Admin</h2>
@@ -209,13 +211,11 @@ function EditAdmin($id)
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/Admins/{$admin['image']}\" alt=\"admin_img\" width=100%>
+                    <img src=\"../img/Admins/{$admin['image']}\" alt=\"admin_img\" id=\"editAdminImg\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\">
-                </div> 
-                
-                
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" onchange=\"changeImg(document.getElementById('editAdminImg'), this)\">
+                </div>                 
             </form>
         </body>
         </html>";
@@ -235,21 +235,5 @@ function AddRolesSelect($role)
         $html .= ">{$roles[$i]['name']}</option>";
     }
     $html .= "</select>";
-    return $html;
-}
-
-function LoadBootstrap()
-{
-    $html = '<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-                <link rel="stylesheet" type="text/css" href="../css/index.css">
-            </head>
-            <body>';
     return $html;
 }

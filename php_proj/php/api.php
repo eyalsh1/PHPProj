@@ -39,3 +39,34 @@ function login_check($uname, $pwd)
     echo "Wrong Username or Password";
     return false;
 }
+
+function LoadBootstrap()
+{
+    $html = '<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                <link rel="stylesheet" type="text/css" href="../css/index.css">
+                <script src="School.js"></script>
+            </head>
+            <body>';
+    return $html;
+}
+
+function LoadScript()
+{
+    $html = '<script>
+                function changeImg(source, dest) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        source.src = e.target.result;
+                    };
+                    reader.readAsDataURL(dest.files[0]);
+                }
+            </script>';
+    return $html;
+}

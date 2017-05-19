@@ -191,6 +191,7 @@ function EditCourse($id)
 {
     $course = Course::get($id);
     $html = LoadBootstrap();
+    $html .= LoadScript();
     $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Course</h2>
@@ -223,10 +224,10 @@ function EditCourse($id)
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/Courses/{$course['image']}\" alt=\"course_img\" width=100%>
+                    <img src=\"../img/Courses/{$course['image']}\" alt=\"course_img\" id=\"editCourseImg\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" onchange=\"changeImg(document.getElementById('editCourseImg'), this)\">
                 </div>
             
                 <h2 class=\"control-label col-sm-12\"><br>Total " . Student::countCourseStudents($id) . " student";
@@ -244,6 +245,7 @@ function EditCourse($id)
 function AddCourse()
 {
     $html = LoadBootstrap();
+    $html .= LoadScript();
     $html .= "<form action=\"School.php\">
                 <div class=\"col-sm-12\">
                     <h2>Add Course</h2>
@@ -273,10 +275,10 @@ function AddCourse()
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/school_img.png\" alt=\"course_img\" width=100%>
+                    <img src=\"../img/school_img.png\" alt=\"course_img\" id=\"courseImg\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\" required>
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" onchange=\"changeImg(document.getElementById('courseImg'), this)\" required>
                 </div>
             </form>
         </body>
@@ -288,6 +290,7 @@ function EditStudent($id, $courses)
 {
     $student = Student::get($id);
     $html = LoadBootstrap();
+    $html .= LoadScript();
     $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Student</h2>
@@ -323,10 +326,10 @@ function EditStudent($id, $courses)
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/Students/{$student['image']}\" alt=\"img\" width=100%>
+                    <img src=\"../img/Students/{$student['image']}\" alt=\"img\" id=\"editStudentImg\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\">
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" onchange=\"changeImg(document.getElementById('editStudentImg'), this)\">
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>
@@ -344,6 +347,7 @@ function EditStudent($id, $courses)
 function AddStudent($courses)
 {
     $html = LoadBootstrap();
+    $html .= LoadScript();
     //$html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\">
     $html .= "<form action=\"School.php\">
                 <div class=\"col-sm-12\">
@@ -377,10 +381,10 @@ function AddStudent($courses)
             
                 <label class=\"control-label col-sm-2\">Image:</label>
                 <div class=\"col-sm-2\">
-                    <img src=\"../img/school_img.png\" alt=\"student_img\" width=100%>
+                    <img src=\"../img/school_img.png\" alt=\"student_img\" id=\"addStudentImg\" width=100%>
                 </div>
                 <div class=\"col-sm-8\">
-                    <input type=\"file\" name=\"img\" accept=\"image/*\" required>
+                    <input type=\"file\" name=\"img\" accept=\"image/*\" onchange=\"changeImg(document.getElementById('addStudentImg'), this)\" required>
                 </div>
             
                 <div class=\"col-sm-12\"><br></div>
@@ -508,21 +512,4 @@ function UploadFile($uploadfile)
     echo 'Here is some more debugging info:';
     print_r($_FILES);
     print "</pre>";
-}
-
-function LoadBootstrap()
-{
-    $html = '<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-                <link rel="stylesheet" type="text/css" href="../css/index.css">
-                <script src="School.js"></script>
-            </head>
-            <body>';
-    return $html;
 }
