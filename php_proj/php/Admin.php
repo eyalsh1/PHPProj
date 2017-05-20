@@ -11,11 +11,11 @@ $admins = Admin::read();
 
 $html = buildAside($admins);
 
-if (!isset($_GET['action']))
+if (!isset($_GET['action']) && !isset($_POST['action']))
 {
     $html .= buildSummary($admins);
 }
-else
+else if (isset($_GET['action']))
 {
     switch ($_GET['action']) {
         case 'logout':
@@ -37,23 +37,34 @@ else
             $html .= "</div>";
             break;
 
-        case 'save': // Update Admin
-            Admin::update($_GET['id'], $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], Admin::GetRoleId($_GET['role'])['id'], $_GET['password']);
-            header("Location: Admin.php");
+        default:
+            echo "action is not defined";
             break;
-
+    }
+}
+else
+{
+    switch ($_POST['action']) {
         case 'add': // Add Admin
-            $admin = new Admin('', $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], Admin::GetRoleId($_GET['role'])['id'], $_GET['password']);
+            moveImg("../img/Admins/");
+            $admin = new Admin('', $_POST['name'], $_POST['phone'], $_POST['email'], basename($_FILES['img']['name']), Admin::GetRoleId($_POST['role'])['id'], $_POST['password']);
             $admin->insert();
             header("Location: Admin.php");
             break;
 
+        case 'save': // Update Admin
+            moveImg("../img/Admins/");
+            Admin::update($_POST['id'], $_POST['name'], $_POST['phone'], $_POST['email'], basename($_FILES['img']['name']), Admin::GetRoleId($_POST['role'])['id'], $_POST['password']);
+            header("Location: Admin.php");
+            break;
+
         case 'delete':
-            Admin::delete($_GET['id']);
+            Admin::delete($_POST['id']);
             header("Location: Admin.php");
             break;
 
         default:
+            echo "action is not defined";
             break;
     }
 }
@@ -105,7 +116,7 @@ function AddAdmin()
 {
     $html = LoadBootstrap();
     $html .= LoadScript();
-    $html .= "<form action=\"Admin.php\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"Admin.php\" method=\"POST\">
                 <div class=\"col-sm-12\">
                     <h2>Add Admin</h2>
                     <hr>
@@ -140,7 +151,7 @@ function AddAdmin()
             
                 <label class=\"control-label col-sm-2\">Role:</label>
                 <div class=\"col-sm-10\">";
-                    //<input type=\"text\" class=\"form-control\" name=\"role\">
+
     $html .= AddRolesSelect('');
     $html .= "</div>
             
@@ -175,7 +186,7 @@ function EditAdmin($id)
     else
     {
         $html .= LoadScript();
-        $html .= "<form action = \"Admin.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
+        $html .= "<form enctype=\"multipart/form-data\" action=\"Admin.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                     <div class=\"col-sm-12\">
                         <h2>Edit Admin</h2>
                         <hr>
@@ -214,7 +225,7 @@ function EditAdmin($id)
                     
                     <label class=\"control-label col-sm-2\">Role:</label>
                     <div class=\"col-sm-10\">";
-                        //<input type=\"text\" class=\"form-control\" name=\"role\" value=\"{$admin['role']}\">
+
         $html .= AddRolesSelect($admin['role']);
         $html .= "</div>
                

@@ -69,3 +69,12 @@ function LoadScript()
             </script>';
     return $html;
 }
+
+function moveImg($uploaddir)
+{
+    $uploadfile = $uploaddir . basename($_FILES['img']['name']);
+    if (move_uploaded_file($_FILES['img']['tmp_name'], $uploadfile))
+        echo "File was uploaded";
+    else
+        echo "Upload failed";
+}

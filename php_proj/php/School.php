@@ -15,11 +15,11 @@ $students = Student::read();
 
 $html = buildAside($courses, $students);
 
-if (!isset($_GET['action']))
+if (!isset($_GET['action']) && !isset($_POST['action']))
 {
     $html .= buildSummary($courses, $students);
 }
-else
+else if (isset($_GET['action']))
 {
     switch ($_GET['action']) {
         case 'logout':
@@ -81,50 +81,61 @@ else
             }
             break;
 
+        default:
+            echo "action is not defined";
+            break;
+    }
+}
+else
+{
+    switch ($_POST['action']) {
         case 'save':
-            switch ($_GET['type']) {
+            switch ($_POST['type']) {
                 case 'course': // Update Course
-                    Course::update($_GET['id'], $_GET['name'], $_GET['description'], $_GET['img']);
+                    moveImg("../img/Courses/");
+                    Course::update($_POST['id'], $_POST['name'], $_POST['description'], basename($_FILES['img']['name']));
                     break;
 
                 case 'student': // Update Student
-                    Student::update($_GET['id'], $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], $_GET['course_id']);
+                    moveImg("../img/Students/");
+                    Student::update($_POST['id'], $_POST['name'], $_POST['phone'], $_POST['email'], basename($_FILES['img']['name']), $_POST['course_id']);
                     break;
             }
             header("Location: School.php");
             break;
 
         case 'add':
-            switch ($_GET['type']) {
+            switch ($_POST['type']) {
                 case 'course': // Add Course
-                    $course = new Course('', $_GET['name'], $_GET['description'], $_GET['img']);
+                    moveImg("../img/Courses/");
+                    $course = new Course('', $_POST['name'], $_POST['description'], basename($_FILES['img']['name']));
                     $course->insert();
                     break;
 
                 case 'student': // Add Student
-                    $student = new Student('', $_GET['name'], $_GET['phone'], $_GET['email'], $_GET['img'], $_GET['course_id']);
+                    moveImg("../img/Students/");
+                    $student = new Student('', $_POST['name'], $_POST['phone'], $_POST['email'], basename($_FILES['img']['name']), $_POST['course_id']);
                     $student->insert();
-                    //$uploadfile = 'C:\\xampp\htdocs\\php_proj\\img\\Students\\' . $image;
-                    //UploadFile($uploadfile);
                     break;
             }
             header("Location: School.php");
             break;
 
         case 'delete':
-            switch ($_GET['type']) {
+            switch ($_POST['type']) {
                 case 'course': // Delete Course
-                    Course::delete($_GET['id']);
+                    Course::delete($_POST['id']);
                     break;
 
                 case 'student': // Delete Student
-                    Student::delete($_GET['id']);
+                    Student::delete($_POST['id']);
                     break;
             }
             header("Location: School.php");
             break;
 
         default:
+            echo "action is not defined";
             break;
     }
 }
@@ -192,7 +203,7 @@ function EditCourse($id)
     $course = Course::get($id);
     $html = LoadBootstrap();
     $html .= LoadScript();
-    $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Course</h2>
                     <hr>
@@ -246,7 +257,7 @@ function AddCourse()
 {
     $html = LoadBootstrap();
     $html .= LoadScript();
-    $html .= "<form action=\"School.php\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\">
                 <div class=\"col-sm-12\">
                     <h2>Add Course</h2>
                     <hr>
@@ -291,7 +302,7 @@ function EditStudent($id, $courses)
     $student = Student::get($id);
     $html = LoadBootstrap();
     $html .= LoadScript();
-    $html .= "<form action=\"School.php\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Student</h2>
                     <hr>
@@ -348,8 +359,7 @@ function AddStudent($courses)
 {
     $html = LoadBootstrap();
     $html .= LoadScript();
-    //$html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\">
-    $html .= "<form action=\"School.php\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\">
                 <div class=\"col-sm-12\">
                     <h2>Add Student</h2>
                     <hr>
