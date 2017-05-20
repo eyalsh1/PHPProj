@@ -203,7 +203,7 @@ function EditCourse($id)
     $course = Course::get($id);
     $html = LoadBootstrap();
     $html .= LoadScript();
-    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Course</h2>
                     <hr>
@@ -302,7 +302,7 @@ function EditStudent($id, $courses)
     $student = Student::get($id);
     $html = LoadBootstrap();
     $html .= LoadScript();
-    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
+    $html .= "<form enctype=\"multipart/form-data\" action=\"School.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure?')\">
                 <div class=\"col-sm-12\">
                     <h2>Edit Student</h2>
                     <hr>

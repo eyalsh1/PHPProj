@@ -72,6 +72,11 @@ else
 $html .= "</div>";
 echo $html;
 
+function deleteIt()
+{
+    echo "alert('Delete it!');";
+}
+
 function buildAside($admins)
 {
     $html = "<div class=\"row\">
@@ -186,7 +191,7 @@ function EditAdmin($id)
     else
     {
         $html .= LoadScript();
-        $html .= "<form enctype=\"multipart/form-data\" action=\"Admin.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure you want to delete?')\">
+        $html .= "<form enctype=\"multipart/form-data\" action=\"Admin.php\" method=\"POST\" onSubmit=\"return confirm('Are you sure?')\">
                     <div class=\"col-sm-12\">
                         <h2>Edit Admin</h2>
                         <hr>

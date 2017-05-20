@@ -11,4 +11,9 @@ include 'api.php';
 if (login_check($uname, $pwd))
     header("Location: School.php");
 else // uname or pwd error
-    header("Location: ../index.html");
+{
+    echo "<script language=\"JavaScript\">\n";
+    echo "alert('Username or Password are incorrect!');";
+    echo "window.location='../index.html'";
+    echo "</script>";
+}
